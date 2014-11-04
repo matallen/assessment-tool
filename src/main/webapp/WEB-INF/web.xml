@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         metadata-complete="false">
+    
+	<display-name>Assessment Tool</display-name>
+	<!--
+	<servlet>
+		<servlet-name>Version</servlet-name>
+		<servlet-class>com.redhat.gsso.wlprofiler.VersionServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Version</servlet-name>
+		<url-pattern>/version</url-pattern>
+	</servlet-mapping>
+	-->
+	
+	<servlet>
+        <servlet-name>FileHandler</servlet-name>
+        <servlet-class>com.redhat.wizard.FileUploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FileHandler</servlet-name>
+        <url-pattern>/handler</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>Graph</servlet-name>
+        <servlet-class>com.redhat.wizard.ChartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Graph</servlet-name>
+        <url-pattern>/graph</url-pattern>
+    </servlet-mapping>
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+	
+	<welcome-file-list>
+	   <welcome-file>configuration.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
