@@ -24,7 +24,7 @@ public class FileUploadServlet extends HttpServlet {
     if (null!=request.getParameter("delete")){
       String configName=request.getParameter("delete");
       new File(UPLOAD_DIRECTORY, configName).delete();
-      request.getRequestDispatcher("/index.jsp").forward(request, response);
+      request.getRequestDispatcher("/configuration.jsp").forward(request, response);
       
     }else{
       File file=new File(UPLOAD_DIRECTORY, request.getParameter("download"));
@@ -56,7 +56,7 @@ public class FileUploadServlet extends HttpServlet {
 //      request.setAttribute("message", "Sorry this Servlet only handles file upload request");
     }
 
-    request.getRequestDispatcher("/index.jsp").forward(request, response);
+    request.getRequestDispatcher("/configuration.jsp").forward(request, response);
 
   }
 

@@ -59,6 +59,7 @@ public class Main {
     try{
       int startingRow=2;
       int startingCol=1;
+      if (config.endsWith(".xls")) config=config.substring(0, config.length()-4);
       
       InputStream data=ResourceFactory.newFileResource(new File(configsBase+config+".xls")).getInputStream();
       InputStream template=ResourceFactory.newFileResource(new File(configsBase+"/template.drl")).getInputStream();
