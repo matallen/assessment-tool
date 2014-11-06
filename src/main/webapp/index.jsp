@@ -14,7 +14,7 @@ if (session.getAttribute("bean")!=null){
   bean=(Main)session.getAttribute("bean");
 }else{
   bean=new Main();
-  bean.run("config");
+  bean.run(request.getParameter("config"));
   session.setAttribute("bean", bean);
 }
 Page xpage=null;
