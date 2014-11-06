@@ -26,16 +26,6 @@ import org.drools.runtime.rule.FactHandle;
 
 public class Main {
   public static final String configsBase="src/main/resources/";
-  
-  
-  @SuppressWarnings("unused")
-  public static void main(String[] args){
-    Main bean=new Main();
-    bean.run("config");
-    Page page1=bean.getPage(1);
-    System.out.println(page1);
-  }
-  
   public Map<Integer, Page> pages=new LinkedHashMap<Integer,Page>();
   public String title;
   public String getTitle(){return this.title;};
@@ -49,11 +39,18 @@ public class Main {
       configs.add(f.getName());
     return configs;
   }
-  
+  public Map<Integer,Page> getPages(){
+    return pages;
+  }
   public Page getPage(Integer pageNumber){
     return pages.get(pageNumber);
   }
   
+  private String config;
+  public void reset(){
+    pages.clear();
+    run(config);
+  }
   
   public void run(String config){
     try{
@@ -61,11 +58,13 @@ public class Main {
       int startingCol=1;
       if (config.endsWith(".xls")) config=config.substring(0, config.length()-4);
       
+      this.config=config;
+      
       InputStream data=ResourceFactory.newFileResource(new File(configsBase+config+".xls")).getInputStream();
       InputStream template=ResourceFactory.newFileResource(new File(configsBase+"/template.drl")).getInputStream();
       
       String drl = new ExternalSpreadsheetCompiler().compile(data, template, InputType.XLS, startingRow, startingCol);
-      System.out.println(drl);
+//      System.out.println(drl);
       KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
       builder.add(ResourceFactory.newByteArrayResource(drl.getBytes()), ResourceType.DRL);
       KnowledgeBase kBase = builder.newKnowledgeBase();
@@ -105,6 +104,10 @@ public class Main {
         page.getControls().add(c);
         pages.put(page.getNumber(), page);
       }
+      
+      // set the last page
+      pages.get(pages.size()).setLast(true);
+      
     }catch(IOException e){
       e.printStackTrace();
     }

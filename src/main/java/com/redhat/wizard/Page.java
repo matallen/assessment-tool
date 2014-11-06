@@ -7,10 +7,12 @@ public class Page {
   private List<Control> controls;
   private Integer number;
   private String name;
+  private boolean isLast;
   
   public Page(Integer number, String name){
     this.number=number;
     this.name=name;
+    this.isLast=false;
     this.controls=new LinkedList<Control>();
   }
   
@@ -23,6 +25,12 @@ public class Page {
   public List<Control> getControls(){
     return controls;
   }
+  public boolean isLast(){
+    return isLast;
+  }
+  public void setLast(boolean b) {
+    this.isLast=b;
+  }
 
   public Control getControl(String string) {
     for(IControl c:controls){
@@ -32,4 +40,5 @@ public class Page {
     }
     return null;
   }
+
 }

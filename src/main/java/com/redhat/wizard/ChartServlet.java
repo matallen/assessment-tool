@@ -22,7 +22,9 @@ public class ChartServlet extends HttpServlet {
     // set the content type so the browser can see this as it is
     response.setContentType("image/png");
     
-    String clientCompany=bean.getPage(1).getControl("Client name").getAnswer();
+    //String clientCompany=bean.getPage(1).getControl("Client name").getAnswer();
+    String clientCompany="A Chart for TODO";
+    
     
     Page chartPage=bean.getPage(Integer.parseInt(pageNumber));
     JFreeChart chart=new SpiderWebGraph().createChart(clientCompany, bean, chartPage);

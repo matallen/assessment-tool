@@ -9,28 +9,34 @@ com.redhat.wizard.Main
 
 <%
 HttpSession session=request.getSession(true);
-Main bean;
-if (session.getAttribute("bean")!=null && request.getParameter("config")==null){
-  bean=(Main)session.getAttribute("bean");
-}else{
+Main bean=null;
+
+if (request.getParameter("config")!=null){
+  session.invalidate();
+  session=request.getSession(true);
+}
+
+if (session.getAttribute("bean")==null){
   session.invalidate();
   session=request.getSession(true);
   bean=new Main();
-  System.out.println("CONFIG = "+request.getParameter("config"));
+  System.out.println("loading questionnaire: "+request.getParameter("config"));
   bean.run(request.getParameter("config"));
   session.setAttribute("bean", bean);
+}else{
+  bean=(Main)session.getAttribute("bean");
 }
-Page xpage=null;
 
-System.out.println("0");
-Integer pageNumber=null!=request.getParameter("pageNumber")?Integer.parseInt(request.getParameter("pageNumber")):1;
-System.out.println("1");
 if (null!=request.getParameter("restart")){
-  if (null!=session)
-    session.invalidate();
+  System.out.println("resetting");
+  session.invalidate();
   session=request.getSession(true);
+  bean.reset();
+  session.setAttribute("bean", bean);
 }
-System.out.println("2");
+
+Page xpage=null;
+Integer pageNumber=null!=request.getParameter("pageNumber")?Integer.parseInt(request.getParameter("pageNumber")):1;
 if (request.getParameter("restart")!=null){
   pageNumber=1;
 }else if (request.getParameter("next")!=null){
@@ -43,17 +49,9 @@ System.out.println("pn = "+pageNumber);
 if (null!=session.getAttribute(String.valueOf(pageNumber))){
   xpage=(Page)session.getAttribute(String.valueOf(pageNumber));
 }else{
-  System.out.println("Loading new page "+ pageNumber);
   xpage=bean.getPage(pageNumber);
-//  if (null==xpage){
-//    System.out.println("NO PAGE "+pageNumber+" FOUND!");
-//    session.setAttribute("bean", bean);
-//    bean.debug(request);
-//    String path=request.getContextPath()+"/graph";
-//    System.out.println("redirecting to: "+path);
-//    response.sendRedirect(path);
-//  }
 }
+System.out.println("page object = "+xpage);
 
 if (request.getParameter("next")!=null || request.getParameter("previous")!=null){
   Integer oldPageNumber=request.getParameter("next")!=null?pageNumber-1:pageNumber+1;
@@ -66,6 +64,10 @@ if (request.getParameter("next")!=null || request.getParameter("previous")!=null
     session.setAttribute(String.valueOf(oldPage.getNumber()), oldPage);
   }
 }
+
+if (xpage==null) throw new RuntimeException("Page not found. looking for page "+pageNumber+". Pages known = "+bean.getPages());
+
+
 
 %>
 
@@ -127,6 +129,7 @@ if (request.getParameter("next")!=null || request.getParameter("previous")!=null
 						        <%
 						        if (null!=page && null!=xpage.getControls()){
 							        for (IControl ctl:xpage.getControls()){
+							          if (ctl==null) throw new RuntimeException("Unable to find control");
 							        %>
 							            <%=ctl.toControl(request, xpage.getNumber())%>
 							        <%
@@ -139,7 +142,7 @@ if (request.getParameter("next")!=null || request.getParameter("previous")!=null
 						        &nbsp;&nbsp;&nbsp;&nbsp;
 						        &nbsp;&nbsp;&nbsp;&nbsp;
 						        <input type="submit" name="previous" <%=xpage.getNumber()==1?"disabled":""%> value="Previous"/>
-						        <input type="submit" name="next" value="Next"/>
+						        <input type="submit" name="next" <%=xpage.isLast()?"disabled":""%> value="Next"/>
 							   </form>
 							   
 						   </div>
