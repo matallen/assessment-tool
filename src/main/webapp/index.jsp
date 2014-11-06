@@ -13,6 +13,8 @@ Main bean;
 if (session.getAttribute("bean")!=null && request.getParameter("config")==null){
   bean=(Main)session.getAttribute("bean");
 }else{
+  session.invalidate();
+  session=request.getSession(true);
   bean=new Main();
   System.out.println("CONFIG = "+request.getParameter("config"));
   bean.run(request.getParameter("config"));
