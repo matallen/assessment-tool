@@ -67,6 +67,9 @@ public class Main {
 //      System.out.println(drl);
       KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
       builder.add(ResourceFactory.newByteArrayResource(drl.getBytes()), ResourceType.DRL);
+      
+      if (builder.hasErrors()) System.out.println(drl);
+      
       KnowledgeBase kBase = builder.newKnowledgeBase();
       
       StatefulKnowledgeSession session=kBase.newStatefulKnowledgeSession();

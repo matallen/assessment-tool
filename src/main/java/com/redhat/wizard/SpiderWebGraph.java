@@ -12,10 +12,6 @@ import org.jfree.ui.RectangleEdge;
 
 public class SpiderWebGraph {
 
-//  public SpiderWebGraph(String title) {
-//    JFreeChart jfreechart=createChart(title, createDataset());
-//  }
-
   private CategoryDataset createDataset(String title, Main bean, Page chartPage) {
     DefaultCategoryDataset defaultcategorydataset=new DefaultCategoryDataset();
     
@@ -23,14 +19,14 @@ public class SpiderWebGraph {
     
     for(String spoke:chartPage.getControls().get(0).getOptions()){
       Page page=bean.getPageByName(spoke.trim());
-      int weighting=1;
+      int cumulativeWeighting=0;
       for(Control c:page.getControls()){
         Control ctl=(Control)c;
         if (null!=ctl.getAnswer())
-          weighting+=Integer.parseInt(ctl.getAnswer());
+          cumulativeWeighting+=ctl.getWeighting().intValue() * Integer.parseInt(ctl.getAnswer());
       }
-      System.out.println("dataset.addValue("+weighting+", '"+title +"','"+spoke+"');");
-      defaultcategorydataset.addValue(weighting, title, spoke);
+      System.out.println("dataset.addValue("+cumulativeWeighting+", '"+title +"','"+spoke+"');");
+      defaultcategorydataset.addValue(cumulativeWeighting, title, spoke);
     }
     
     return defaultcategorydataset;

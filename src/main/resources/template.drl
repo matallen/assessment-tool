@@ -6,6 +6,7 @@ id
 question
 type
 options
+weighting
 salience
 
 package com.redhat.wizard
@@ -26,6 +27,7 @@ then
     "@{question}", 
     "@{type}" 
     ,"@{options}"
+    ,Integer.parseInt("@{weighting}")
     );
     l.add(ctl);
 end

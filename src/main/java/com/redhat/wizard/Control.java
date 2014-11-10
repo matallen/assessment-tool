@@ -10,6 +10,7 @@ public class Control implements IControl{
   private String type;
   private String[] options;
   private String answer;
+  private Integer weighting;
   public Control(String form, String type) {
     super();
     this.form=form;
@@ -23,6 +24,16 @@ public class Control implements IControl{
     this.question=question;
     this.type=type;
   }
+  public Control(int pageNumber, String form, Integer id, String question, String type, String options, Integer weighting) {
+    super();
+    this.pageNumber=pageNumber;
+    this.form=form;
+    this.id=id;
+    this.question=question;
+    this.type=type;
+    this.options=options.split(",");
+    this.weighting=weighting;
+  }
   public Control(int pageNumber, String form, Integer id, String question, String type, String options) {
     super();
     this.pageNumber=pageNumber;
@@ -31,6 +42,7 @@ public class Control implements IControl{
     this.question=question;
     this.type=type;
     this.options=options.split(",");
+    this.weighting=1;
   }
   public Integer getPageNumber(){
     return pageNumber;
@@ -49,6 +61,9 @@ public class Control implements IControl{
   }
   public String[] getOptions() {
     return options;
+  }
+  public Integer getWeighting(){
+    return weighting;
   }
   public String toString(){
     return "Control("+form+"->"+question+"; answer="+answer+")";
@@ -83,7 +98,6 @@ public class Control implements IControl{
   }
   public void setAnswer(String value) {
     this.answer=value;
-    // TODO: identify the weighting of the answer
   }
   public String getAnswer(){
     return this.answer;
