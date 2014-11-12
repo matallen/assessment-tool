@@ -1,6 +1,5 @@
 <%@page session="false" %>
 <%@ page import="
-com.redhat.wizard.IControl,
 com.redhat.wizard.Control,
 com.redhat.wizard.*,
 java.util.List,
@@ -57,7 +56,7 @@ if (request.getParameter("next")!=null || request.getParameter("previous")!=null
   Integer oldPageNumber=request.getParameter("next")!=null?pageNumber-1:pageNumber+1;
   Page oldPage=bean.getPage(oldPageNumber);
   if (null!=oldPage){
-    for(IControl c:oldPage.getControls()){
+    for(Control c:oldPage.getControls()){
       c.setAnswer(request.getParameter(String.valueOf(c.getId())));
       System.out.println("Setting answer for "+c.getQuestion()+" to "+request.getParameter(String.valueOf(c.getId())));
     }
@@ -123,26 +122,17 @@ if (xpage==null) throw new RuntimeException("Page not found. looking for page "+
 		                    
 							   <h2><%=xpage.getName()%></h2>
 							   <form method="post" ACTION="index.jsp">
-							   <input type="hidden" name="pageName" value="<%=xpage.getName()%>"/>
-							   <input type="hidden" name="pageNumber" value="<%=xpage.getNumber()%>"/>
-							   <table>
-						        <%
-						        if (null!=page && null!=xpage.getControls()){
-							        for (IControl ctl:xpage.getControls()){
-							          if (ctl==null) throw new RuntimeException("Unable to find control");
-							        %>
-							            <%=ctl.toControl(request, xpage.getNumber())%>
-							        <%
-							        }
-						        }
-						        %>
-						        </table>
-						        <input type="submit" name="restart" value="Restart"/>
-						        &nbsp;&nbsp;&nbsp;&nbsp;
-						        &nbsp;&nbsp;&nbsp;&nbsp;
-						        &nbsp;&nbsp;&nbsp;&nbsp;
-						        <input type="submit" name="previous" <%=xpage.getNumber()==1?"disabled":""%> value="Previous"/>
-						        <input type="submit" name="next" <%=xpage.isLast()?"disabled":""%> value="Next"/>
+								   <input type="hidden" name="pageName" value="<%=xpage.getName()%>"/>
+								   <input type="hidden" name="pageNumber" value="<%=xpage.getNumber()%>"/>
+								   <table>
+							         <%=xpage.display(request)%>
+							       </table>
+							       <input type="submit" name="restart" value="Restart"/>
+							       &nbsp;&nbsp;&nbsp;&nbsp;
+							       &nbsp;&nbsp;&nbsp;&nbsp;
+						          &nbsp;&nbsp;&nbsp;&nbsp;
+						          <input type="submit" name="previous" <%=xpage.getNumber()==1?"disabled":""%> value="Previous"/>
+						          <input type="submit" name="next" <%=xpage.isLast()?"disabled":""%> value="Next"/>
 							   </form>
 							   
 						   </div>

@@ -25,6 +25,10 @@ public class SpiderWebGraph {
         if (null!=ctl.getAnswer())
           cumulativeWeighting+=ctl.getWeighting().intValue() * Integer.parseInt(ctl.getAnswer());
       }
+      
+      // normalize the graph. ie if one page has 10 questions and another 1, then if answers are both "basic" level then the graph shouldnt be skewed towards the 10 question subject
+      cumulativeWeighting=cumulativeWeighting/page.getControls().size();
+      
       System.out.println("dataset.addValue("+cumulativeWeighting+", '"+title +"','"+spoke+"');");
       defaultcategorydataset.addValue(cumulativeWeighting, title, spoke);
     }

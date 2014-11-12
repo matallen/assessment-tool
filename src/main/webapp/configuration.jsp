@@ -63,7 +63,7 @@ Main bean=new Main();
 		                      <ul>
 		                        <%
 		                        for(String c:bean.listConfigs()){
-		                        if ("template.drl".equals(c)) continue;
+		                        if (c.endsWith(".drl")) continue;
 		                        if (c.startsWith(".")) continue;
 		                        %>
 		                           <li><a href="handler?download=<%=c%>"><%=c%></a> | <a href="index.jsp?config=<%=c%>">start</a> | <a href="handler?delete=<%=c%>">delete</a></li>

@@ -1,0 +1,24 @@
+
+template header
+page
+low
+high
+text
+
+package com.redhat.wizard
+import com.redhat.wizard.*
+
+template "feedback"
+
+rule "feedback_@{row.rowNumber}"
+when
+    $f:Feedback(
+        page=="@{page}" 
+        ,score>=@{low} 
+        ,score<=@{high}
+        )
+then
+    $f.setText("@{text}");
+end
+
+end template

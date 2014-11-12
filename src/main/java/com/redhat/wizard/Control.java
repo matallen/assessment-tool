@@ -2,7 +2,7 @@ package com.redhat.wizard;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class Control implements IControl{
+public class Control {
   private int pageNumber;
   private String form;
   private Integer id;
@@ -11,6 +11,19 @@ public class Control implements IControl{
   private String[] options;
   private String answer;
   private Integer weighting;
+  public Control(int pageNumber, String form, String type) { // feedback
+    super();
+    this.pageNumber=pageNumber;
+    this.form=form;
+    this.type=type;
+  }
+  public Control(int pageNumber, String form, int id, String type) { // feedback
+    super();
+    this.pageNumber=pageNumber;
+    this.form=form;
+    this.id=id;
+    this.type=type;
+  }
   public Control(String form, String type) {
     super();
     this.form=form;
@@ -92,6 +105,8 @@ public class Control implements IControl{
       control+="</select>";
     }else if ("graph".equalsIgnoreCase(type)){
       control="<img src=\""+request.getContextPath()+"/graph?pageNumber="+pageNumber+"\"/>";
+    }else if ("feedback".equalsIgnoreCase(type)){
+      
     }
 //    return "<p class=\"text\" >"+label+"&nbsp;"+control+"</p>";
     return "<tr><td valign=\"top\" class=\"td-label-wrapper\">"+label+"</td><td class=\"td-control-wrapper\">"+control+"</td></tr>";

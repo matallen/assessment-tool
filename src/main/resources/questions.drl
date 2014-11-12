@@ -1,0 +1,38 @@
+
+template header
+pageNum
+form
+id
+question
+type
+options
+weighting
+salience
+
+package com.redhat.wizard
+import com.redhat.wizard.*
+
+template "questions"
+
+rule "questions_@{row.rowNumber}"
+salience @{row.rowNumber}
+when
+    a:Assessment();
+then
+    if ("@{type}".equalsIgnoreCase("title")){
+        a.setTitle("@{form}");
+    }else{
+	    Control ctl=new Control(
+	    Integer.parseInt("@{pageNum}"),
+	    "@{form}", 
+	    Integer.parseInt("@{id}"), 
+	    "@{question}", 
+	    "@{type}" 
+	    ,"@{options}"
+	    ,Integer.parseInt("@{weighting}")
+	    );
+	    a.addControl(Integer.parseInt("@{pageNum}"), ctl);
+	}
+end
+
+end template

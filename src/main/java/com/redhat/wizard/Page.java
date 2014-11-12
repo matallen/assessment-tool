@@ -3,8 +3,10 @@ package com.redhat.wizard;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class Page {
-  private List<Control> controls;
+  private LinkedList<Control> controls;
   private Integer number;
   private String name;
   private boolean isLast;
@@ -16,13 +18,23 @@ public class Page {
     this.controls=new LinkedList<Control>();
   }
   
+  public String display(HttpServletRequest request){
+    StringBuffer sb=new StringBuffer();
+    if (null!=getControls()){
+      for (Control ctl:getControls()){
+          sb.append(ctl.toControl(request, getNumber()));
+      }
+    }
+    return sb.toString();
+  }
+  
   public Integer getNumber(){
     return number;
   }
   public String getName(){
     return name;
   }
-  public List<Control> getControls(){
+  public LinkedList<Control> getControls(){
     return controls;
   }
   public boolean isLast(){
@@ -33,7 +45,7 @@ public class Page {
   }
 
   public Control getControl(String string) {
-    for(IControl c:controls){
+    for(Control c:controls){
       if (string.equalsIgnoreCase(c.getQuestion())){
         return (Control)c;
       }
