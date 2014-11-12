@@ -1,6 +1,5 @@
 <%@page session="false" %>
 <%@ page import="
-com.redhat.wizard.IControl,
 com.redhat.wizard.Control,
 com.redhat.wizard.*,
 java.util.List,
